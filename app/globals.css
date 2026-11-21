@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+/*
+ * Observatory: a star chart at night. Midnight blue, thin brass linework, ivory text.
+ * Every colour and radius is a token here; constants/theme.ts mirrors them for the 3D scenes.
+ */
+:root {
+  /* Surface */
+  --background: #080d1c;
+  --background-elevated: #0c1226;
+  --surface: #101935;
+  --surface-hover: #172346;
+  --border: #26315a;
+  --border-strong: #3a4878;
+
+  /* Brass: the linework colour */
+  --brass: #d4b266;
+  --brass-dim: rgba(212, 178, 102, 0.34);
+
+  /* Text */
+  --foreground: #efe9d6;
+  --muted: #aab1ca;
+  --muted-foreground: #8790b0;
+
+  /* Brand */
+  --primary: #d4b266;
+  --primary-foreground: #0a0f1e;
+  --secondary: #a3b1ff;
+  --accent: #82d9d4;
+
+  /* Semantic */
+  --success: #72d39f;
+  --warning: #eab34d;
+  --error: #ff8294;
+
+  /* Effects */
+  --glow-primary: rgba(212, 178, 102, 0.3);
+  --glow-secondary: rgba(163, 177, 255, 0.3);
+  --glow-accent: rgba(130, 217, 212, 0.3);
+
+  --radius: 0.375rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 0.25rem);
+  --radius-sm: calc(var(--radius) - 0.5rem);
+
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+  --font-heading: var(--font-fraunces);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(
+      ellipse 80% 55% at 50% -12%,
+      rgba(212, 178, 102, 0.08),
+      transparent 62%
+    ),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Page titles use the serif; everything smaller stays in the sans for legibility. */
+h1,
+h2 {
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--glow-primary);
+  color: var(--foreground);
+}
+
+/* Thin, unobtrusive scrollbars to match premium tooling aesthetic */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+  border: 2px solid var(--background);
+}
+
+/* A panel: dark chart paper with a thin brass border and registration marks in two corners. */
+.glass {
+  position: relative;
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--brass-dim);
+}
+.glass::before,
+.glass::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--brass);
+  pointer-events: none;
+}
+.glass::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.glass::after {
+  right: -1px;
+  bottom: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* Small caption above a heading, like the legend on a chart */
+.label-caps {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
